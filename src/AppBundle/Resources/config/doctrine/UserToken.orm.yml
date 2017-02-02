@@ -1,0 +1,20 @@
+AppBundle\Entity\UserToken:
+    type: entity
+    table: user_tokens
+    repositoryClass: \AppBundle\Repository\UserTokenRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        token:
+            type: string
+
+    oneToOne:
+        user:
+            targetEntity: AppBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+

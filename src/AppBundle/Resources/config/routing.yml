@@ -1,0 +1,35 @@
+
+auth_login:
+    path:     /auth/login
+    defaults: { _controller: app.auth_controller:loginAction }
+    methods:  [POST]
+
+user_permissions_all:
+    path:     /users/permissions
+    defaults: { _controller: app.permissions_controller:getAllAction }
+    methods:  [GET]
+
+user_permissions_update:
+    path:     /users/permissions
+    defaults: { _controller: app.permissions_controller:saveAction }
+    methods:  [PUT]
+
+user_all:
+    path:     /users
+    defaults: { _controller: app.user_controller:getAllAction }
+    methods:  [GET]
+
+user_get:
+    path:     /users/{id}
+    defaults: { _controller: app.user_controller:getOneAction }
+    methods:  [GET]
+
+user_add:
+    path:     /users
+    defaults: { _controller: app.user_controller:saveAction }
+    methods:  [POST]
+
+user_update:
+    path:     /users/{id}
+    defaults: { _controller: app.user_controller:saveAction }
+    methods:  [PUT]

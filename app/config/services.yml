@@ -1,0 +1,73 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+
+    # a helper for transforming json requests
+    kernel.event_listener.json_request_transformer:
+        class: Qandidate\Common\Symfony\HttpKernel\EventListener\JsonRequestTransformerListener
+        tags:
+          - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 100 }
+
+    # auth
+    app.token_authenticator:
+        class: AppBundle\Security\TokenAuthenticator
+
+    # providers
+    app.user_provider:
+        class: AppBundle\Security\UserProvider
+        arguments: ['@app.user_service', '@app.user_token_service']
+
+    # repositories
+    app.user_token_repository:
+        class: AppBundle\Repository\UserTokenRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\UserToken
+
+    app.permissions_repository:
+        class: AppBundle\Repository\PermissionsRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\Permissions
+
+    app.user_repository:
+        class: AppBundle\Repository\AdminRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\User
+
+    # services
+    app.auth_service:
+        class: AppBundle\Service\AuthService
+        arguments: ['@app.user_service', '@app.user_token_repository']
+
+    app.permissions_service:
+        class: AppBundle\Service\PermissionsService
+        arguments: ['@app.permissions_repository']
+
+    app.user_token_service:
+        class: AppBundle\Service\UserTokenService
+        arguments: ['@app.user_token_repository']
+
+    app.user_service:
+        class: AppBundle\Service\UserService
+        arguments: ['@app.user_repository', '@security.password_encoder']
+
+    # controllers
+    app.auth_controller:
+        class: AppBundle\Controller\AuthController
+        arguments: ['@app.auth_service']
+
+    app.user_controller:
+        class: AppBundle\Controller\UserController
+        arguments: ['@app.user_service', '@security.password_encoder']
+
+    app.permissions_controller:
+        class: AppBundle\Controller\PermissionsController
+        arguments: ['@app.permissions_service']

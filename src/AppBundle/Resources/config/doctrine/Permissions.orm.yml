@@ -1,0 +1,27 @@
+AppBundle\Entity\Permissions:
+    type: entity
+    table: permissions
+    repositoryClass: \AppBundle\Repository\PermissionsRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        read:
+            column: `read`
+            type: boolean
+        write:
+            column: `write`
+            type: boolean
+        delete:
+            column: `delete`
+            type: boolean
+
+    oneToOne:
+        user:
+          targetEntity: AppBundle\Entity\User
+          joinColumn:
+            name: user_id
+            referencedColumnName: id
+
