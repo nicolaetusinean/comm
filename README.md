@@ -6,7 +6,7 @@ API
 
 Postman
 In order to see the API endpoints you need to install Postman and 
-import the file `postman.coolection.json` . 
+import the file `comm.postman_collection` . 
 After that create a new environment in Postman and add two new
 variables to that environment:
 1. `baseUrl` = the actual URL like http://localhost/comm/
